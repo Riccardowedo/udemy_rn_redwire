@@ -5,20 +5,24 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { connect } from 'react-redux';
 import { StyleSheet, Text, View } from 'react-native';
+import SideDrawerCustom from './utils/customDrawer';
+import { Colors } from './utils/tools';
 
 const Drawer = createDrawerNavigator();
 
 import { Stack, HomeStack, VideosStack } from './routes/stacks';
-
-
-import VideosScreen from './components/home/videos';
-import HomeScreen from './components/home/articles';
 import AuthScreen from './components/auth';
+import ProfileScreen from './components/user/profile/profile';
+
 
 const MainDrawer = () => (
-  <Drawer.Navigator>
+  <Drawer.Navigator
+    drawerContent={(props) => <SideDrawerCustom {...props}/>}
+    drawerStyle={{backgroundColor: Colors.black}}
+  >
     <Drawer.Screen name="Home" component={HomeStack}/>
     <Drawer.Screen name="Videos" component={VideosStack}/>
+    <Drawer.Screen name="Profile" component={ProfileScreen}/>
   </Drawer.Navigator>
 )
 
@@ -32,6 +36,7 @@ class App extends Component{
               <Stack.Screen
                 name="Main"
                 component={ MainDrawer }
+                options={{ headerShown:false}}
               />
             </>
           :
