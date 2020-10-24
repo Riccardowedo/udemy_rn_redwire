@@ -3,6 +3,8 @@ import { View, Text, ScrollView } from 'react-native';
 import { Appbar, TextInput, Divider, Button, Title }from 'react-native-paper'
 
 
+import UserData from './userData';
+
 const ProfileScreen = () => {
     return(
         <ScrollView>
@@ -31,6 +33,8 @@ const ProfileScreen = () => {
                     Update
                 </Button>
             </View>
+            <Divider/>
+            <UserData/>
 
         </ScrollView>
     )
