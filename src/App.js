@@ -10,9 +10,10 @@ import { Colors } from './utils/tools';
 
 const Drawer = createDrawerNavigator();
 
-import { Stack, HomeStack, VideosStack } from './routes/stacks';
+import { Stack, HomeStack, VideosStack, screenOptions } from './routes/stacks';
 import AuthScreen from './components/auth';
 import ProfileScreen from './components/user/profile/profile';
+import VideoScreen from './components/home/videos/video';
 
 
 const MainDrawer = () => (
@@ -37,6 +38,14 @@ class App extends Component{
                 name="Main"
                 component={ MainDrawer }
                 options={{ headerShown:false}}
+              />
+              <Stack.Screen 
+                name="VideoScreen" 
+                component={ VideoScreen }
+                options={{
+                  ...screenOptions,
+                  headerBackTitleVisible:false
+                }}
               />
             </>
           :
