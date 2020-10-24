@@ -1,12 +1,14 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-
+import { View, Text, ScrollView } from 'react-native';
+import ContentShow from '../../../../utils/contentShow';
 
 const VideoScreen = () => {
     return(
-        <View>
-            <Text>Video screen</Text>
-        </View>
+        <ScrollView>
+            <View>
+                <ContentShow/>     
+            </View>
+        </ScrollView>
     )
 }
 
