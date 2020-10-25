@@ -41,8 +41,12 @@ export const autoSignIn = () => (
                     resolve({ isAuth: true, user: snapshot.data() })
                 })
             } else {
-                return { isAuth: false, user:[] }
+                resolve({ isAuth: false, user:[] })
             }
         })
     })
+)
+
+export const logoutUser = () => (
+    firebase.auth().signOut()
 )
