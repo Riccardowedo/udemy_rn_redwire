@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { 
     View, Text, 
     Button, ScrollView,
-    TouchableOpacity,StyleSheet 
+    TouchableOpacity,StyleSheet ,
+    ActivityIndicator
 } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -65,6 +66,12 @@ const HomeScreen = ({navigation}) => {
                 renderCard()
                 :null
             }
+
+            {loadingMore ?
+                <View style={{marginTop:50, marginBottom:50}}>
+                    <ActivityIndicator color="black"/>
+                </View>
+            :null}
         </ScrollView>
     )
 }

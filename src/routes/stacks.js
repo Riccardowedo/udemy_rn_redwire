@@ -56,7 +56,8 @@ export const VideosStack = () => (
 export const HomeStack = () => (
     <Stack.Navigator
         screenOptions={{
-            ...screenOptions
+            ...screenOptions,
+            headerBackTitleVisible:false
         }}
         initialRouteName="Home_screen"
     >
