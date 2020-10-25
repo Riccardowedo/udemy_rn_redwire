@@ -1,11 +1,13 @@
-import React,{ useState } from 'react';
+import React,{ useState,useCallback } from 'react';
 import { View } from 'react-native';
 import { TextInput, Button, Title }from 'react-native-paper';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import { showToast } from '../../../utils/tools';
+import { useFocusEffect } from '@react-navigation/native'
 
 import { useDispatch, useSelector} from 'react-redux';
-import { updateUserData } from '../../../store/actions';
+import { updateUserData, clearAuthError } from '../../../store/actions';
 
 const UserData = () => {
     const  [loading,setLoading] = useState(false)
@@ -15,8 +17,30 @@ const UserData = () => {
 
 
     const handleSubmit = (values) => {
-        alert('submit');
+        setLoading(true);
+        dispatch(updateUserData(values,user)).then(({payload})=>{
+            setLoading(false);
+            if(payload.error){
+                showToast('error','Ups !!','Try again later');
+            } else {
+                showToast('success','Congratulations','Your profile was updated');
+            }
+        });
     }
+
+    React.useEffect(()=>{
+        if(error){
+            /// show toast
+        }
+    },[error]);
+
+
+    useFocusEffect(
+        useCallback(()=>{
+            return () => dispatch(clearAuthError())
+        },[])
+    )
+
 
     return(
         <Formik
@@ -62,6 +86,8 @@ const UserData = () => {
                     value={values.age}
                 />
                  <Button
+                    disabled={loading}
+                    loading={loading}
                     mode="contained"
                     onPress={handleSubmit}
                 >
