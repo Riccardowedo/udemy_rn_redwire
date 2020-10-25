@@ -10,6 +10,12 @@ export const loginUser = (values) => ({
     payload: api.loginUser(values)
 })
 
+export const autoSignIn = () => ({
+    type:'AUTH_USER',
+    payload: api.autoSignIn()
+})
+
+
 export const clearAuthError = () => ({
     type:'CLEAR_AUTH_ERROR'
 })

@@ -32,3 +32,17 @@ export const loginUser = async({ email,password }) =>{
         return { error:error.message }
     }
 }
+
+export const autoSignIn = () => (
+    new Promise((resolve,reject)=>{
+        firebase.auth().onAuthStateChanged( user => {
+            if(user){
+                usersCollection.doc(user.uid).get().then( snapshot =>{
+                    resolve({ isAuth: true, user: snapshot.data() })
+                })
+            } else {
+                return { isAuth: false, user:[] }
+            }
+        })
+    })
+)
