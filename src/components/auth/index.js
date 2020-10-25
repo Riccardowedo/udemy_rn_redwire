@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Input, Button } from 'react-native-elements';
-import {LogoText, Colors} from '../../utils/tools';
+import {LogoText, Colors, showToast } from '../../utils/tools';
 
 const AuthScreen = () => {
     const [formType, setFormType] = useState(true)
@@ -14,6 +14,11 @@ const AuthScreen = () => {
     const handleSubmit = (values) => {
         alert(values)
     }
+
+    useEffect(()=>{
+      //  showToast('error','sorry','error msg')
+    },[])
+
 
     return(
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -72,14 +77,14 @@ const AuthScreen = () => {
                            // loading={}
                         />
                          <Button
-                            title={ formType ? 'Register':'Login'}
+                            type="clear"
+                            title={`${!formType ? 'Already Registered?':'Need to sign in?'}`}
                             buttonStyle={{
-                                backgroundColor: Colors.black,
                                 marginTop:20
                             }}
-                            titleStyle={{ width:'100%'}}
-                           // onPress={}
-                           // loading={}
+                            titleStyle={{ width:'100%', color:Colors.white}}
+                            onPress={()=> setFormType(!formType)}
+                    
                         />
 
                     </>
