@@ -17,8 +17,10 @@ firebase.initializeApp(config);
 
 const DB = firebase.firestore();
 const usersCollection = DB.collection('users');
+const articlesCollection = DB.collection('articles');
 
 export {
     firebase,
-    usersCollection
+    usersCollection,
+    articlesCollection
 }

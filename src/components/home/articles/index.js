@@ -1,38 +1,51 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
     View, Text, 
     Button, ScrollView,
     TouchableOpacity,StyleSheet 
 } from 'react-native';
-import { Card } from 'react-native-elements'
-
+import { Card } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { getArticles } from '../../../store/actions';
+ 
 const HomeScreen = ({navigation}) => {
+    const articles = useSelector(state => state.articles);
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(getArticles())
+    },[dispatch])
+
 
     const renderCard = () => (
-        <TouchableOpacity
-            onLongPress={()=> navigation.navigate('Article_screen',{
-                id: 'vdhjbd',
-                postData: {title:'sjsjs',content:''}
-            })}
-        >
-            <Card>
-                <Card.Title style={styles.cardTitle}>
-                    <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do </Text>
-                </Card.Title>
-                <Card.Divider/>
-                <Text style={styles.cardText}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                </Text>
-            </Card>
-        </TouchableOpacity>
+        articles.posts.map((item)=>(
+            <TouchableOpacity
+                key={item.id}
+                onLongPress={()=> navigation.navigate('Article_screen',{
+                    id: item.id,
+                    postData: item
+                })}
+            >
+                <Card>
+                    <Card.Title style={styles.cardTitle}>
+                        <Text>{item.title}</Text>
+                    </Card.Title>
+                    <Card.Divider/>
+                    <Text style={styles.cardText}>
+                        {item.excerpt}
+                    </Text>
+                </Card>
+            </TouchableOpacity>
+        ))
     )
 
 
     return(
         <ScrollView>
-            {renderCard()}
-            {renderCard()}
-            {renderCard()}
+            { articles && articles.posts ?
+                renderCard()
+                :null
+            }
         </ScrollView>
     )
 }

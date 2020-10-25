@@ -26,7 +26,14 @@ export const updateUserData = (values,user) => ({
 })
 
 
-
 export const clearAuthError = () => ({
     type:'CLEAR_AUTH_ERROR'
 })
+
+///// articles
+
+export const getArticles = () => ({
+    type:'GET_ARTICLES',
+    payload: api.getArticles()
+})
+
