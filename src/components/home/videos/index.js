@@ -1,30 +1,47 @@
-import React from 'react';
+import React,{ useEffect,useState} from 'react';
 import { render } from 'react-dom';
 import { View, Text, Button, ScrollView, ActivityIndicator,StyleSheet } from 'react-native';
 import { Tile } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { getVideos } from '../../../store/actions';
 
 const VideosScreen = ({navigation}) => {
+    const [loadingMore,setLoadingMore] = useState(false);
+    const articles = useSelector(state => state.articles)
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        dispatch(getVideos())
+    },[dispatch])
+
+
 
     const renderVideos = () => (
-        <Tile
-            imageSrc={{uri:'https://picsum.photos/200/300'}}
-            title='Lorem ipsum dolor sit amet, consectetur adipiscing elit'
-            icon={{ name:'play-circle',type:'font-awesome',color:'#fff',size:50}}
-            contentContainerStyle={styles.contentContainerStyle}
-            containerStyle={styles.containerStyle}
-            titleStyle={{fontSize:15}}
-            onPress={()=> navigation.navigate('VideoScreen',{
-                id:'hsdvhsjdv',
-                postData:{}
-            })}
-        />
+        articles.videos.map((item)=>(
+            <Tile
+                key={item.id}
+                imageSrc={{ uri: item.image }}
+                title={item.title}
+                icon={{ name:'play-circle',type:'font-awesome',color:'#fff',size:50}}
+                contentContainerStyle={styles.contentContainerStyle}
+                containerStyle={styles.containerStyle}
+                titleStyle={{fontSize:15}}
+                onPress={()=> navigation.navigate('VideoScreen',{
+                    id: item.id,
+                    postData: item
+                })}
+            />
+        ))
     )
 
 
     return(
         <ScrollView>
             <View style={{padding:20}}>
-                {renderVideos()}
+                { articles && articles.videos ?
+                    renderVideos()
+                    :null
+                }
             </View>
             {/* <Button
                 title="see article"

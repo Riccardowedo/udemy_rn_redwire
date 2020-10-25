@@ -43,4 +43,9 @@ export const getMoreArticles = (articles) => ({
 })
 
 
+export const getVideos = () => ({
+    type:'GET_VIDEOS',
+    payload: api.getVideos()
+})
+
 

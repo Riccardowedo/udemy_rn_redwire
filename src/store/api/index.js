@@ -1,5 +1,5 @@
 import { Alert } from 'react-native';
-import { firebase, usersCollection,articlesCollection } from '../../firebase';
+import { firebase, usersCollection,articlesCollection,videosCollection } from '../../firebase';
 
 
 export const registerUser = async({ email,password }) =>{
@@ -112,5 +112,25 @@ export const getMoreArticles = async(articles) => {
     } catch(error){
         alert(error)
         return { posts,lastPostVisible}
+    }
+}
+
+
+export const getVideos = async() => {
+    try{
+        const response = await videosCollection
+        .where('public','==',1)
+        .orderBy('createdAt')
+        .limit(3)
+        .get();
+
+        const lastVideoVisible = response.docs[response.docs.length-1];
+        const videos = response.docs.map( doc => ({
+            id: doc.id,...doc.data()
+        }));
+        return { videos: videos,lastVideoVisible: lastVideoVisible }
+    }catch(error){
+        console.log(error);
+        return error
     }
 }
