@@ -48,4 +48,11 @@ export const getVideos = () => ({
     payload: api.getVideos()
 })
 
+export const getMoreVideos = (articles) => ({
+    type:'GET_VIDEOS',
+    payload: api.getMoreVideos(articles)
+})
+
+
+
 

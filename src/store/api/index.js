@@ -134,3 +134,30 @@ export const getVideos = async() => {
         return error
     }
 }
+
+
+export const getMoreVideos = async(articles) => {
+    let videos = [...articles.videos];
+    let lastVideoVisible = articles.lastVideoVisible
+
+    try {
+        if(lastVideoVisible){
+            const response = await videosCollection
+            .where('public','==',1)
+            .orderBy('createdAt')
+            .startAfter(lastVideoVisible)
+            .limit(2)
+            .get();
+
+            lastVideoVisible = response.docs[response.docs.length-1];     
+            const newArticles = response.docs.map( doc => ({
+                id: doc.id,...doc.data()
+            }));
+            return { videos:[...articles.videos,...newArticles], lastVideoVisible}
+        }
+        return { videos,lastVideoVisible}
+    } catch(error){
+        alert(error)
+        return { videos,lastVideoVisible}
+    }
+}

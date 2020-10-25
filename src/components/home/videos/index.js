@@ -1,9 +1,8 @@
 import React,{ useEffect,useState} from 'react';
-import { render } from 'react-dom';
-import { View, Text, Button, ScrollView, ActivityIndicator,StyleSheet } from 'react-native';
+import { View, ScrollView, ActivityIndicator,StyleSheet } from 'react-native';
 import { Tile } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { getVideos } from '../../../store/actions';
+import { getVideos, getMoreVideos } from '../../../store/actions';
 
 const VideosScreen = ({navigation}) => {
     const [loadingMore,setLoadingMore] = useState(false);
@@ -13,8 +12,6 @@ const VideosScreen = ({navigation}) => {
     useEffect(()=>{
         dispatch(getVideos())
     },[dispatch])
-
-
 
     const renderVideos = () => (
         articles.videos.map((item)=>(
@@ -35,8 +32,28 @@ const VideosScreen = ({navigation}) => {
     )
 
 
+
+    const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+        const paddingToBottom = 50;
+        return layoutMeasurement.height + contentOffset.y >=
+        contentSize.height - paddingToBottom;
+    }
+
+
     return(
-        <ScrollView>
+        <ScrollView
+            onScroll={({nativeEvent})=> {
+                if(isCloseToBottom(nativeEvent)){
+                    if(!loadingMore){
+                            setLoadingMore(true);
+                            dispatch(getMoreVideos(articles)).then(()=>{
+                                setLoadingMore(false);
+                            })
+                    }
+                }
+            }}
+            scrollEventThrottle={400}
+        >
             <View style={{padding:20}}>
                 { articles && articles.videos ?
                     renderVideos()
@@ -47,6 +64,11 @@ const VideosScreen = ({navigation}) => {
                 title="see article"
                 onPress={()=> navigation.navigate('Video_screen')}
             /> */}
+             {loadingMore ?
+                <View style={{marginTop:50, marginBottom:50}}>
+                    <ActivityIndicator color="black"/>
+                </View>
+            :null}
         </ScrollView>
     )
 }
