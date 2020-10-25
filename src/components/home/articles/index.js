@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
     View, Text, 
     Button, ScrollView,
@@ -6,9 +6,10 @@ import {
 } from 'react-native';
 import { Card } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
-import { getArticles } from '../../../store/actions';
+import { getArticles,getMoreArticles } from '../../../store/actions';
  
 const HomeScreen = ({navigation}) => {
+    const [loadingMore,setLoadingMore] = useState(false);
     const articles = useSelector(state => state.articles);
     const dispatch = useDispatch();
 
@@ -39,9 +40,27 @@ const HomeScreen = ({navigation}) => {
         ))
     )
 
+    const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
+        const paddingToBottom = 50;
+        return layoutMeasurement.height + contentOffset.y >=
+        contentSize.height - paddingToBottom;
+    }
+
 
     return(
-        <ScrollView>
+        <ScrollView
+            onScroll={({nativeEvent})=> {
+                if(isCloseToBottom(nativeEvent)){
+                   if(!loadingMore){
+                        setLoadingMore(true);
+                        dispatch(getMoreArticles(articles)).then(()=>{
+                            setLoadingMore(false);
+                        })
+                   }
+                }
+            }}
+            scrollEventThrottle={400}
+        >
             { articles && articles.posts ?
                 renderCard()
                 :null
