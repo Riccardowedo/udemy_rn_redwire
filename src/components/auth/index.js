@@ -25,7 +25,7 @@ const AuthScreen = () => {
             <View style={styles.container}>
                 <LogoText/>
                 <Formik
-                    initialValues={{ email:'francis@gmail.com',password:'testing123'}}
+                    initialValues={{ email:'',password:''}}
                     validationSchema={Yup.object({
                         email: Yup.string()
                         .email('Invalid email address')
@@ -45,6 +45,10 @@ const AuthScreen = () => {
                             placeholderTextColor={Colors.grey}
                             inputContainerStyle={styles.inputContainerStyle}
 
+                            renderErrorMessage={errors.email && touched.email}
+                            errorMessage={errors.email}
+                            errorStyle={{ color: Colors.black}}
+
                             onChangeText={handleChange('email')}
                             onBlur={handleBlur('email')}
                             value={values.email}
@@ -62,6 +66,10 @@ const AuthScreen = () => {
                                 onPress:()=> setSecurEntry(!securEntry)
                             }}
 
+                            renderErrorMessage={errors.password && touched.password}
+                            errorMessage={errors.password}
+                            errorStyle={{ color: Colors.black}}
+
                             onChangeText={handleChange('password')}
                             onBlur={handleBlur('password')}
                             value={values.password}
@@ -73,7 +81,7 @@ const AuthScreen = () => {
                                 marginTop:20
                             }}
                             titleStyle={{ width:'100%'}}
-                           // onPress={}
+                            onPress={handleSubmit}
                            // loading={}
                         />
                          <Button
